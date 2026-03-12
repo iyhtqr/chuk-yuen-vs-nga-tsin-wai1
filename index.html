@@ -3,373 +3,226 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Urban Divergence • Chuk Yuen vs Nga Tsin Wai</title>
+<title>Chuk Yuen vs Nga Tsin Wai • Interactive Comparison</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --primary: #2c5282;        
-    --primary-light: #bee3f8;  
-    --accent: #ed64a6;         
-    --bg: linear-gradient(135deg, #f7fafc, #f4f6f9);  
-    --glass: rgba(255, 255, 255, 0.85);
-    --border: rgba(44, 82, 130, 0.12);
-    --text-muted: #718096;
-  }
-
   * {margin:0; padding:0; box-sizing:border-box;}
   body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    background: var(--bg);
-    color: #2d3748;
+    font-family:'IBM Plex Sans', sans-serif;
+    background: linear-gradient(135deg,#f8f9ff,#f4f2ec);
+    color:#041676;
     line-height: 1.6;
-    overflow-x: hidden;
   }
-
-  #scroll-progress {
-    position: fixed; top: 0; left: 0; width: 0%; height: 4px;
-    background: var(--primary); z-index: 2000;
-  }
-
   header {
-    position: fixed; top: 0; width: 100%; height: 80px;
-    background: var(--glass); backdrop-filter: blur(12px);
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 5%; z-index: 1000; border-bottom: 1px solid var(--border);
+    position:fixed; top:0; left:0; right:0;
+    height:72px; display:flex; align-items:center; justify-content:center;
+    background:rgba(255,255,255,0.85);
+    backdrop-filter:blur(18px);
+    border-bottom:1px solid rgba(4,22,118,0.15);
+    z-index:1000;
+  }
+  header img {height:40px;}
+  .main-content {
+    padding:120px 20px 100px;
+    max-width:1100px; margin:auto;
+  }
+  .header-text{text-align:center; margin-bottom:4rem;}
+  .header-text h1{font-size:clamp(2.2rem, 5vw, 3.2rem); font-weight:700; margin-bottom:1rem; letter-spacing:-0.02em;}
+  .header-text p{color:#4b5563; max-width:850px; margin:0 auto; font-size:1.1rem;}
+
+  .village-photos {
+    display:flex; gap:1.5rem; justify-content:center; margin-bottom:4rem;
+  }
+  .village-photo {
+    flex:1; max-width:450px; border-radius:16px; overflow:hidden;
+    box-shadow:0 10px 30px rgba(4,22,118,0.08);
+    background: #fff;
+  }
+  .village-photo img {width:100%; height:260px; object-fit:cover; display:block;}
+  .photo-label {
+    padding:1rem; background:#fff; text-align:center; font-weight:600; font-size:1rem;
   }
 
-  .logo-text { font-weight: 800; color: var(--primary); letter-spacing: -1px; font-size: 1.2rem; }
-  .year-status { font-size: 0.8rem; font-weight: 600; color: var(--primary); }
+  .tabs {
+    display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-bottom:2.5rem;
+  }
+  .tab {
+    padding:0.8rem 1.8rem; border-radius:50px; border:1.5px solid rgba(4,22,118,0.2);
+    background:transparent; color:#041676; font-weight:600; cursor:pointer;
+    transition:all 0.3s ease; font-size:1rem;
+  }
+  .tab.active {background:#041676; color:#fff; border-color:#041676; box-shadow:0 4px 12px rgba(4,22,118,0.2);}
+  .tab:hover:not(.active) {background:rgba(4,22,118,0.05);}
 
-  .hero {
-    padding: 160px 5% 60px;
-    text-align: center;
-    background: radial-gradient(circle at top right, var(--primary-light), transparent);
+  .content-container {
+    background:#fff; border-radius:20px; box-shadow:0 4px 30px rgba(0,0,0,0.04);
+    overflow:hidden; border:1px solid rgba(4,22,118,0.05);
   }
+  .tab-content {display:none; animation:fadeIn 0.5s ease-out;}
+  .tab-content.active {display:block;}
 
-  .hero h1 { 
-    font-size: clamp(2.2rem, 8vw, 3.8rem); 
-    font-weight: 800; 
-    color: var(--primary); 
-    line-height: 1.1; 
-    margin-bottom: 20px; 
+  table {width:100%; border-collapse:collapse; table-layout: fixed;}
+  th {
+    background:rgba(4,22,118,0.02); text-align:left;
+    text-transform:uppercase; letter-spacing:0.1em; font-size:0.85rem;
+    color:#6b7280; padding:1.5rem; border-bottom:2px solid #041676;
   }
-  .hero p { 
-    max-width: 800px; 
-    margin: 0 auto; 
-    font-size: 1.1rem; 
-    color: var(--text-muted); 
+  td {padding:1.5rem; border-bottom:1px solid rgba(4,22,118,0.05); vertical-align:top;}
+  .category {
+    width:30%; font-weight:700; color:#041676; background:rgba(4,22,118,0.01);
+    border-right:1px solid rgba(4,22,118,0.05);
   }
-
-  .comparison-grid {
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    gap: 2rem;
-    padding: 2rem 5%; 
-    max-width: 1400px; 
-    margin: 0 auto;
-  }
-
-  .village-card {
-    background: rgba(255,255,255,0.95); 
-    border-radius: 24px; 
-    overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.06);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border: 1px solid var(--border);
-    cursor: pointer;
-    backdrop-filter: blur(10px);
-  }
-  .village-card:hover { 
-    transform: translateY(-10px); 
-    box-shadow: 0 25px 60px rgba(0,0,0,0.12); 
-  }
-
-  .card-img { width: 100%; height: 280px; object-fit: cover; }
-  .card-content { padding: 2rem; }
+  td ul {padding-left:1.2rem; color:#374151;}
+  td ul li {margin-bottom:0.6rem;}
   
-  .badge {
-    display: inline-block; 
-    padding: 6px 14px; 
-    border-radius: 20px;
-    font-size: 0.75rem; 
-    font-weight: 700; 
-    text-transform: uppercase; 
-    margin-bottom: 1rem;
-  }
-  .badge-graded { background: rgba(34,197,94,0.15); color: #059669; }
-  .badge-none { background: rgba(239,68,68,0.15); color: #dc2626; }
-
-  .analysis-section { 
-    padding: 4rem 5%; 
-    max-width: 1400px; 
-    margin: 0 auto; 
-  }
-  
-  .tab-nav {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 3rem;
-    background: rgba(241,245,249,0.9);
-    border-radius: 20px;
-    padding: 12px 16px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-  }
-  .tab-nav::-webkit-scrollbar { display: none; }
-
-  .tab-btn {
-    flex: 1 0 auto;
-    padding: 16px 24px;
-    border-radius: 16px;
-    border: none;
-    background: rgba(255,255,255,0.8);
-    color: var(--text-muted);
-    font-weight: 700;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.3s;
-    white-space: nowrap;
-    min-width: 160px;
-    text-align: center;
-    line-height: 1.3;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .tab-btn:hover {
-    background: rgba(255,255,255,1);
-    color: var(--primary);
-    transform: translateY(-2px);
-  }
-  .tab-btn.active { 
-    background: var(--primary) !important; 
-    color: #fff !important; 
-    box-shadow: 0 8px 30px rgba(44,82,130,0.4);
+  .highlight-box {
+    background: #f0f4ff; padding: 1rem; border-left: 4px solid #041676; 
+    margin-top: 0.5rem; font-size: 0.95rem; font-style: italic;
   }
 
-  .analysis-table-container {
-    background: rgba(255,255,255,0.92); 
-    border-radius: 24px; 
-    padding: 2.5rem;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.08);
-    border: 1px solid var(--border);
-    backdrop-filter: blur(16px);
+  footer {
+    text-align:center; padding:2rem; color:#9ca3af; font-size:0.85rem; margin-top:2rem;
   }
 
-  .analysis-row {
-    display: grid; 
-    grid-template-columns: 220px 1fr 1fr; 
-    gap: 2rem; 
-    padding: 2rem 0; 
-    border-bottom: 1px solid rgba(226,232,240,0.8);
-  }
-  .analysis-row:last-child { border-bottom: none; }
-  
-  .row-label { 
-    font-weight: 800; 
-    color: var(--primary); 
-    font-size: 0.95rem; 
-    text-transform: uppercase; 
-    letter-spacing: 0.5px;
-  }
-
-  .diff-insight {
-    grid-column: 1 / -1; 
-    background: rgba(190,227,248,0.4); 
-    padding: 1.8rem; 
-    border-radius: 16px; 
-    border-left: 4px solid var(--accent);
-    font-size: 0.98rem; 
-    margin-top: 1.5rem;
-    font-weight: 600;
-    backdrop-filter: blur(10px);
-  }
-
-  footer { 
-    padding: 4rem 5%; 
-    text-align: center; 
-    color: var(--text-muted); 
-    font-size: 0.9rem; 
-  }
-
-  @media (max-width: 1000px) {
-    .comparison-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-    .analysis-row { grid-template-columns: 1fr; gap: 1.2rem; }
-    .tab-nav { gap: 6px; padding: 12px 14px; }
-    .tab-btn { min-width: 140px; padding: 14px 20px; font-size: 0.85rem; }
+  @keyframes fadeIn{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);}}
+  @media(max-width:768px){
+    .village-photos {flex-direction:column; align-items:center;}
+    .category {width:40%; font-size:0.9rem;}
+    .tab {width:100%;}
   }
 </style>
 </head>
+
 <body>
-
-<div id="scroll-progress"></div>
-
 <header>
-  <div class="logo-text">RECO3043 Advanced Conservation Planning</div>
-  <div class="year-status">2026 Case Study</div>
+  <img src="https://via.placeholder.com/200x50/041676/fff?text=RECO3043+URBAN+PLANNING" alt="Course Logo">
 </header>
 
-<section class="hero">
-  <h1>Chuk Yuen United Village vs. Nga Tsin Wai Village</h1>
-  <p>Why, despite both being part of Kowloon Thirteen Villages with centuries-old history and years of community resistance, one achieved "Conservation by Design" while the other faces full demolition?</p>
-</section>
+<div class="main-content">
+  <div class="header-text">
+    <h1>Chuk Yuen vs Nga Tsin Wai</h1>
+    <p>A comparative study of two historic Kowloon villages: Analyzing the divergence between "Conservation by Design" and "Full Resumption" within Hong Kong's statutory planning framework.</p>
+  </div>
 
-<section class="comparison-grid">
-  <div class="village-card" data-village="ntw">
-    <img src="https://www.ourchinastory.com/images/cover/hong-kong/2024/05/horizontal/NgaTsinWaiRoad_x1.jpg" class="card-img" alt="Nga Tsin Wai">
-    <div class="card-content">
-      <span class="badge badge-graded">Grade III • Conservation Park</span>
-      <h2 style="color: var(--primary); margin-bottom: 10px;">Nga Tsin Wai Village</h2>
-      <p style="font-size: 0.9rem; color: var(--text-muted);">Only surviving urban walled village. Achieved hybrid conservation through 20-year coalition.</p>
-      <div style="margin-top: 20px;">
-        <small>Integrity Score</small>
-        <div style="width: 100%; height: 8px; background: rgba(226,232,240,0.8); border-radius: 4px; margin-top: 5px;">
-          <div style="width: 85%; height: 100%; background: #48bb78; border-radius: 4px;"></div>
-        </div>
-      </div>
+  <div class="village-photos">
+    <div class="village-photo">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRM8GHMjYu5H1jSoHqDPqfFiyWSkwQQOHfgoA&s" alt="Chuk Yuen Village">
+      <div class="photo-label">Chuk Yuen United Village (Remnant)</div>
+    </div>
+    <div class="village-photo">
+      <img src="https://www.ourchinastory.com/images/cover/hong-kong/2024/05/horizontal/NgaTsinWaiRoad_x1.jpg" alt="Nga Tsin Wai">
+      <div class="photo-label">Nga Tsin Wai Walled Village (Core)</div>
     </div>
   </div>
 
-  <div class="village-card" data-village="cy">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRM8GHMjYu5H1jSoHqDPqfFiyWSkwQQOHfgoA&s" class="card-img" alt="Chuk Yuen">
-    <div class="card-content">
-      <span class="badge badge-none">Ungraded • Full Demolition</span>
-      <h2 style="color: var(--primary); margin-bottom: 10px;">Chuk Yuen United Village</h2>
-      <p style="font-size: 0.9rem; color: var(--text-muted);">Post-1957 squatter enclave. Facing total clearance for public housing in 2026.</p>
-      <div style="margin-top: 20px;">
-        <small>Integrity Score</small>
-        <div style="width: 100%; height: 8px; background: rgba(226,232,240,0.8); border-radius: 4px; margin-top: 5px;">
-          <div style="width: 20%; height: 100%; background: #f56565; border-radius: 4px;"></div>
-        </div>
-      </div>
+  <div class="tabs">
+    <button class="tab active" data-tab="0">Shared Heritage</button>
+    <button class="tab" data-tab="1">Case: Nga Tsin Wai</button>
+    <button class="tab" data-tab="2">Case: Chuk Yuen</button>
+    <button class="tab" data-tab="3">Analytical Divergence</button>
+  </div>
+
+  <div class="content-container">
+    <div class="tab-content active" id="tab0">
+      <table>
+        <thead><tr><th>Dimension</th><th>Shared Context</th></tr></thead>
+        <tbody>
+          <tr><td class="category">Historical Identity</td><td>Both belong to the <strong>Kowloon Thirteen Villages</strong> with origins tracing back centuries (Yuan/Ming/Qing). Both served as vital clan settlements before the rapid urbanisation of Wong Tai Sin.</td></tr>
+          <tr><td class="category">External Pressures</td><td>Both faced severe disruption during the Japanese Occupation (airport expansion) and subsequent post-war squatter clearance policies in the 1950s-60s.</td></tr>
+          <tr><td class="category">2019 Policy Mandate</td><td>Both were identified in the 2019 Policy Address for accelerated public housing development to alleviate Hong Kong's land supply crisis.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tab-content" id="tab1">
+      <table>
+        <thead><tr><th>Component</th><th>Nga Tsin Wai Village</th></tr></thead>
+        <tbody>
+          <tr><td class="category">Typology</td><td>A classic <strong>Walled Village (Wai)</strong> with a defensive layout, central axis, and intact gatehouse/temple.</td></tr>
+          <tr><td class="category">Statutory Status</td><td><strong>Grade III Historic Building</strong> (Gatehouse, Tin Hau Temple, and stone tablet). Triggered mandatory Archaeological Impact Assessments (AIA).</td></tr>
+          <tr><td class="category">Outcome</td><td>URA-led redevelopment. High-rise towers will be built around a <strong>2,000m² Conservation Park</strong>, preserving the village core in-situ.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tab-content" id="tab2">
+      <table>
+        <thead><tr><th>Component</th><th>Chuk Yuen United Village</th></tr></thead>
+        <tbody>
+          <tr><td class="category">Typology</td><td>Predominantly <strong>Squatter/Stone House</strong> typology. Significant loss of original 17th-century vernacular architecture during 1957 clearances.</td></tr>
+          <tr><td class="category">Statutory Status</td><td><strong>Ungraded.</strong> Despite proximity to the Grade I Wong Tai Sin Temple, the village houses themselves lack formal protection from the Antiquities Advisory Board (AAB).</td></tr>
+          <tr><td class="category">Outcome</td><td>Direct <strong>Government Resumption</strong> for public housing. Full demolition in progress (2026) to provide ~700 residential units.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tab-content" id="tab3">
+      <table>
+        <thead><tr><th>Analytical Lens</th><th>Factors Determining the Divergence</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="category">Morphological Integrity</td>
+            <td>
+              <ul>
+                <li><strong>Nga Tsin Wai:</strong> Retained its "Walled" defensive structure, providing "tangible evidence" for AAB grading.</li>
+                <li><strong>Chuk Yuen:</strong> Early demolitions transformed it into a fragmented "scattered village." Lack of physical cohesion led to its "low value" assessment.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td class="category">Statutory Framework</td>
+            <td>
+              <ul>
+                <li><strong>Cap. 53 (AAB):</strong> Nga Tsin Wai's grading forced a "Conservation by Design" obligation on the URA.</li>
+                <li><strong>Resumption Ordinance:</strong> Without grading, Chuk Yuen is treated as a "clearance site," allowing the Housing Society a "blank slate" approach.</li>
+              </ul>
+            </td>
+          </tr>
+          <tr>
+            <td class="category">Institutional Logic</td>
+            <td>
+              <ul>
+                <li><strong>URA Model:</strong> Can balance profit and preservation through plot ratio transfers.</li>
+                <li><strong>Housing Society/Govt:</strong> Focuses on quantitative flat production. Every saved relic is viewed as a "loss" of public housing units.</li>
+              </ul>
+              <div class="highlight-box">Economic Priority: In Chuk Yuen, housing quantity outweighed heritage quality.</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="category">Social Resistance</td>
+            <td>
+              <ul>
+                <li><strong>Timing:</strong> Nga Tsin Wai's resistance peak coincided with the post-2006 heritage movement. Chuk Yuen's primary trauma (1957) occurred before modern conservation advocacy existed.</li>
+              </ul>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-</section>
 
-<section class="analysis-section">
-  <div class="tab-nav" id="tabNav">
-    <button class="tab-btn active" data-target="history">Historical Background</button>
-    <button class="tab-btn" data-target="morphology">Architecture & Integrity</button>
-    <button class="tab-btn" data-target="statutory">Grading & Legislation</button>
-    <button class="tab-btn" data-target="timeline">Clearance Timeline</button>
-    <button class="tab-btn" data-target="policy">Policy & Authority</button>
-    <button class="tab-btn" data-target="resistance">Community Pressure</button>
-    <button class="tab-btn" data-target="cultural">Cultural Value</button>
-    <button class="tab-btn" data-target="outcome">2026 Status</button>
-  </div>
-
-  <div class="analysis-table-container" id="analysisContent"></div>
-</section>
-
-<footer>RECO3043 Advanced Conservation Planning • Kowloon Thirteen Villages Comparative Analysis • 2026</footer>
+  <footer>
+    RECO3043 • Advanced Conservation Planning • Case Study Comparison
+  </footer>
+</div>
 
 <script>
-  const data = {
-    history: {
-      label: "Kowloon Thirteen Villages • Historical Background",
-      ntw: "Yuan dynasty origins (1352), rebuilt 1724 as walled village. Lin clan settlement, Seven Villages Alliance for Taiping Jiao rituals. Only surviving urban walled village (Kangxi era records).",
-      cy: "Yuan/Ming/Qing origins with Lin clan branching to Pu Gang (destroyed Japanese era). Post-war internal migration but 1957 clearances left 'oral history only,' lacking physical evidence.",
-      insight: "Shared Origins, Divergent Paths: Both trace to Yuan dynasty coastal evacuations, wars, Japanese occupation—but Chuk Yuen's early demolitions erased tangible heritage."
-    },
-    morphology: {
-      label: "Architecture & Structural Integrity",
-      ntw: "Intact walled layout: Gatehouse (1724), Tin Hau Temple (1726), central axis, wall foundations, corner watchtowers, ancestral hall remnants (AMO AIA confirmed).",
-      cy: "Only ~12 ordinary stone houses remain near Wong Tai Sin Temple (post-1957 demolition). No walls, gatehouse, ancestral hall, or central axis.",
-      insight: "Critical Difference: Chuk Yuen's early developer/government acquisitions + relocations destroyed 'integrity/authenticity' that AAB requires for grading."
-    },
-    statutory: {
-      label: "Grading & Antiquities Ordinance (Cap. 53)",
-      ntw: "2014 AAB Grade III (gatehouse, Tin Hau Temple, stone tablet) triggered mandatory Archaeological Impact Assessment + 'Conservation by Design' obligations.",
-      cy: "Zero grading (AAB lists confirm: only nearby Wong Tai Sin Temple is Grade I). Village stone houses ungraded.",
-      insight: "No Relics = No Protection: Government not legally required to preserve any Chuk Yuen structures in-situ."
-    },
-    timeline: {
-      label: "Early Clearance Timeline",
-      ntw: "Avoided 1950s clearance via strong resistance, delayed to 1980s developer phase, URA intervention 2007 (20-year debate).",
-      cy: "1957 massive forced relocation (480 people to Lok Fu estates). Village shrank to remnant, later squatter status.",
-      insight: "Timing Was Destiny: Chuk Yuen cleared before heritage awareness; Nga Tsin Wai benefited from 2000s heritage movement."
-    },
-    policy: {
-      label: "Policy Era & Authority",
-      ntw: "URA-led (Urban Renewal Authority). Must balance redevelopment + heritage (2,000㎡ Conservation Park + 750 flats).",
-      cy: "Govt + HK Housing Society direct resumption. Fast-track public housing (site formation 2023, demolition 2026).",
-      insight: "Institutional Logic: URA's flexible zoning vs government's pure housing quota focus (2019 Policy Address).",
-    },
-    resistance: {
-      label: "Community & Academic Pressure",
-      ntw: "20-year coalition (ScienceDirect papers document). East Kowloon Residents Committee + scholars forced URA compromise.",
-      cy: "1957 resistance (Chinese intervention), recent FB/wiki campaigns, but no grading traction or academic support.",
-      insight: "Pressure Requires Assets: Chuk Yuen's stone houses lacked 'showcase' symbolism for wider mobilization."
-    },
-    cultural: {
-      label: "Cultural & Clan Value",
-      ntw: "'Only urban walled village' symbolism + Tin Hau Temple + ancestral records provide robust cultural narrative.",
-      cy: "Lin clan history authentic but 1957 losses left cultural carriers (stone houses) too diminished for recognition.",
-      insight: "Visibility Matters: Cultural value requires tangible assets. Chuk Yuen seen as 'scattered village.'"
-    },
-    outcome: {
-      label: "Final Outcome (2026 Status)",
-      ntw: "Core relics preserved + 2,000㎡ Conservation Park + high-rises (completion ~2030/31).",
-      cy: "Full demolition 2026 for 700+ public housing units (site formation ongoing).",
-      insight: "The Formula: No grading + lost integrity + housing-led authority = zero compromise room."
-    }
-  };
+  const tabs = document.querySelectorAll('.tab');
+  const contents = document.querySelectorAll('.tab-content');
 
-  const nav = document.getElementById('tabNav');
-  const content = document.getElementById('analysisContent');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      // Remove active classes
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.classList.remove('active'));
 
-  function render(key) {
-    const item = data[key];
-    content.innerHTML = `
-      <div class="analysis-row">
-        <div class="row-label">${item.label}</div>
-        <div>
-          <strong style="color:var(--primary)">Nga Tsin Wai:</strong><br>
-          <span style="font-size: 0.92rem; line-height: 1.6;">${item.ntw}</span>
-        </div>
-        <div>
-          <strong style="color:var(--primary)">Chuk Yuen:</strong><br>
-          <span style="font-size: 0.92rem; line-height: 1.6;">${item.cy}</span>
-        </div>
-        <div class="diff-insight">
-          <strong>Key Factor:</strong> ${item.insight}
-        </div>
-      </div>
-    `;
-  }
-
-  nav.addEventListener('click', (e) => {
-    if(e.target.classList.contains('tab-btn')) {
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      e.target.classList.add('active');
-      render(e.target.dataset.target);
-    }
-  });
-
-  // Village card click → jump to first tab
-  document.querySelectorAll('.village-card').forEach((card, i) => {
-    card.addEventListener('click', () => {
-      document.querySelector('.tab-btn[data-target="history"]').click();
-      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Add active classes to selected
+      tab.classList.add('active');
+      const target = document.getElementById(`tab${tab.dataset.tab}`);
+      target.classList.add('active');
     });
   });
-
-  // Initial render
-  render('history');
-
-  // Scroll progress bar
-  window.addEventListener('scroll', () => {
-    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-    const scrolled = (scrollTop / scrollHeight) * 100;
-    document.getElementById('scroll-progress').style.width = scrolled + '%';
-  });
 </script>
-
 </body>
 </html>
